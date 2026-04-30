@@ -4,16 +4,16 @@ options:
   deploymentTarget:
     iOS: "16.0"
   xcodeVersion: "15.0"
-  generateOnly: true
+  generateEmptyDirectories: true
 
 settings:
   base:
+    SWIFT_VERSION: "5.9"
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
-    DEVELOPMENT_TEAM: "9L6N2ZF26B"
     CODE_SIGN_STYLE: Automatic
-    SWIFT_VERSION: "5.9"
-    TARGETED_DEVICE_FAMILY: "1,2"
+    DEVELOPMENT_TEAM: 9L6N2ZF26B
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
 
 packages:
   SnapKit:
@@ -28,55 +28,92 @@ targets:
     type: application
     platform: iOS
     sources:
-      - App
-      - Screens
-      - Components
-      - Models
-      - Services
-      - Utilities
-      - Resources
-    dependencies:
-      - package: SnapKit
-      - package: DGCharts
+      - path: App
+      - path: Screens
+      - path: Components
+      - path: Models
+      - path: Services
+      - path: Utilities
+      - path: Resources
+        excludes:
+          - "**/.DS_Store"
     settings:
       base:
         INFOPLIST_FILE: Resources/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.EQBoostAI
+        PRODUCT_NAME: EQBoostAI
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+        CODE_SIGN_ENTITLEMENTS: Resources/EQBoostAI.entitlements
+      configs:
+        Debug:
+          CODE_SIGNING_ALLOWED: NO
+        Release:
+          CODE_SIGNING_ALLOWED: YES
+    entitlements:
+      path: Resources/EQBoostAI.entitlements
+    dependencies:
+      - package: SnapKit
+      - package: DGCharts
 
   EQBoostAITests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - Tests/EQBoostAITests
+      - path: Tests/EQBoostAITests
     dependencies:
       - target: EQBoostAI
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Tests/EQBoostAITests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.EQBoostAITests
+        PRODUCT_NAME: EQBoostAITests
+        GENERATE_INFOPLIST_FILE: NO
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/EQBoostAI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EQBoostAI"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: 9L6N2ZF26B
+      configs:
+        Debug:
+          CODE_SIGNING_ALLOWED: NO
+        Release:
+          CODE_SIGNING_ALLOWED: YES
 
   EQBoostAIUITests:
     type: bundle.ui-testing
     platform: iOS
     sources:
-      - Tests/EQBoostAIUITests
+      - path: Tests/EQBoostAIUITests
     dependencies:
       - target: EQBoostAI
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Tests/EQBoostAIUITests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.EQBoostAIUITests
+        PRODUCT_NAME: EQBoostAIUITests
+        GENERATE_INFOPLIST_FILE: NO
+        TEST_TARGET: "$(BUILT_PRODUCTS_DIR)/EQBoostAI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EQBoostAI"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: 9L6N2ZF26B
+      configs:
+        Debug:
+          CODE_SIGNING_ALLOWED: NO
+        Release:
+          CODE_SIGNING_ALLOWED: YES
 
 schemes:
   EQBoostAI:
     build:
       targets:
         EQBoostAI: all
+        EQBoostAIUITests: [test]
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - EQBoostAITests
         - EQBoostAIUITests
     profile:
       config: Release
