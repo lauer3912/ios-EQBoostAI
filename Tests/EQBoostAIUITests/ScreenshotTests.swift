@@ -52,9 +52,13 @@ class ScreenshotTests: XCTestCase {
         let window = app.windows.firstMatch
         let screenshot = window.screenshot()
 
+        // Add attachment
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+
+        // Save via print statement - can be extracted from logs
+        print("SCREENSHOT: \(name) - \(screenshot)")
     }
 }
