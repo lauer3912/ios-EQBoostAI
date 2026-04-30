@@ -52,25 +52,9 @@ class ScreenshotTests: XCTestCase {
         let window = app.windows.firstMatch
         let screenshot = window.screenshot()
 
-        // Create attachment for test result
-        let attachment = XCTAttachment(screenshot: screenshot, quality: .jpeg(0.8))
+        let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
-
-        // Also save directly using CGImage
-        if let cgImage = screenshot.cgImage {
-            let uiImage = UIImage(cgImage: cgImage)
-            if let data = uiImage.pngData() {
-                let tempDir = FileManager.default.temporaryDirectory
-                let fileURL = tempDir.appendingPathComponent("eq_\(name).png")
-                do {
-                    try data.write(to: fileURL)
-                    print("SAVED: \(fileURL.path)")
-                } catch {
-                    print("SAVE ERROR: \(error)")
-                }
-            }
-        }
     }
 }
