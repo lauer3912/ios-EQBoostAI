@@ -1,5 +1,9 @@
 import Foundation
 
+enum ScenarioFilter {
+    case all, free, premium
+}
+
 class ScenarioService {
     static let shared = ScenarioService()
 

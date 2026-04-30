@@ -95,6 +95,8 @@ class RolePlayViewController: UIViewController {
     }
 }
 
+// RolePlayViewModel is in RolePlayViewModel.swift
+
 extension RolePlayViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.filteredScenarios.count
@@ -102,36 +104,5 @@ extension RolePlayViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
-    }
-}
-
-enum ScenarioFilter {
-    case all, free, premium
-}
-
-class RolePlayViewModel {
-
-    var filteredScenarios: [Scenario] = []
-    var onScenariosUpdated: (() -> Void)?
-
-    private let scenarioService = ScenarioService.shared
-    private var currentFilter: ScenarioFilter = .all
-
-    func loadScenarios() {
-        filteredScenarios = scenarioService.getAllScenarios()
-        onScenariosUpdated?()
-    }
-
-    func applyFilter(_ filter: ScenarioFilter) {
-        currentFilter = filter
-        switch filter {
-        case .all:
-            filteredScenarios = scenarioService.getAllScenarios()
-        case .free:
-            filteredScenarios = scenarioService.getFreeScenarios()
-        case .premium:
-            filteredScenarios = scenarioService.getAllScenarios().filter { $0.isPremium }
-        }
-        onScenariosUpdated?()
     }
 }
