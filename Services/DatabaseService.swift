@@ -1,184 +1,118 @@
 import Foundation
-import SQLite
 
 class DatabaseService {
     static let shared = DatabaseService()
 
-    private var db: Connection?
+    private let journalEntriesKey = "journal_entries"
+    private let tasksKey = "tasks"
+    private let userProfileKey = "user_profile"
 
-    private let journalEntries = Table("journal_entries")
-    private let tasks = Table("tasks")
-    private let scenarios = Table("scenarios")
+    private let defaults = UserDefaults.standard
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
 
-    private let id = Expression<String>("id")
-    private let text = Expression<String>("text")
-    private let emotions = Expression<String>("emotions")
-    private let intensity = Expression<Int>("intensity")
-    private let date = Expression<Date>("date")
-    private let moodScore = Expression<Int>("mood_score")
-    private let analysis = Expression<String?>("analysis")
-
-    private let title = Expression<String>("title")
-    private let description = Expression<String>("description")
-    private let category = Expression<String>("category")
-    private let difficulty = Expression<String>("difficulty")
-    private let duration = Expression<Int>("duration")
-    private let turns = Expression<Int>("turns")
-    private let isPremium = Expression<Bool>("is_premium")
-    private let iconName = Expression<String>("icon_name")
-    private let conversationHistory = Expression<String>("conversation_history")
-    private let feedback = Expression<String?>("feedback")
-
-    private let taskTitle = Expression<String>("task_title")
-    private let taskDescription = Expression<String>("task_description")
-    private let taskCategory = Expression<String>("task_category")
-    private let xpReward = Expression<Int>("xp_reward")
-    private let isCompleted = Expression<Bool>("is_completed")
-    private let taskDate = Expression<Date>("task_date")
-    private let difficultyLevel = Expression<Int>("difficulty")
-
-    private init {
-        setupDatabase()
-    }
-
-    private func setupDatabase() {
-        do {
-            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-            db = try Connection("\(path)/soulsync.sqlite3")
-            createTables()
-        } catch {
-            print("Database connection error: \(error)")
-        }
-    }
-
-    private func createTables() {
-        do {
-            try db?.run(journalEntries.create(ifNotExists: true) { t in
-                t.column(id, primaryKey: true)
-                t.column(text)
-                t.column(emotions)
-                t.column(intensity)
-                t.column(date)
-                t.column(moodScore)
-                t.column(analysis)
-            })
-
-            try db?.run(tasks.create(ifNotExists: true) { t in
-                t.column(id, primaryKey: true)
-                t.column(taskTitle)
-                t.column(taskDescription)
-                t.column(taskCategory)
-                t.column(xpReward)
-                t.column(isCompleted)
-                t.column(taskDate)
-                t.column(difficultyLevel)
-            })
-        } catch {
-            print("Table creation error: \(error)")
-        }
-    }
+    private init() {}
 
     // MARK: - Journal Operations
 
     func saveJournalEntry(_ entry: JournalEntry) {
+        var entries = getAllJournalEntries()
+        if let index = entries.firstIndex(where: { $0.id == entry.id }) {
+            entries[index] = entry
+        } else {
+            entries.append(entry)
+        }
+        saveJournalEntries(entries)
+    }
+
+    func getAllJournalEntries() -> [JournalEntry] {
+        guard let data = defaults.data(forKey: journalEntriesKey) else { return [] }
         do {
-            let emotionsString = entry.emotions.map { $0.rawValue }.joined(separator: ",")
-            try db?.run(journalEntries.insert(or: .replace,
-                id <- entry.id,
-                text <- entry.text,
-                emotions <- emotionsString,
-                intensity <- entry.intensity,
-                date <- entry.date,
-                moodScore <- entry.moodScore,
-                analysis <- entry.analysis
-            ))
+            let entries = try decoder.decode([JournalEntry].self, from: data)
+            return entries.sorted { $0.date > $1.date }
+        } catch {
+            return []
+        }
+    }
+
+    private func saveJournalEntries(_ entries: [JournalEntry]) {
+        do {
+            let data = try encoder.encode(entries)
+            defaults.set(data, forKey: journalEntriesKey)
         } catch {
             print("Save journal error: \(error)")
         }
     }
 
-    func getAllJournalEntries() -> [JournalEntry] {
-        var entries: [JournalEntry] = []
-        do {
-            for row in try db!.prepare(journalEntries.order(date.desc)) {
-                let emotionStrings = row[emotions].split(separator: ",").map { String($0) }
-                let entryEmotions = emotionStrings.compactMap { Emotion(rawValue: $0) }
-                let entry = JournalEntry(
-                    id: row[id],
-                    text: row[text],
-                    emotions: entryEmotions,
-                    intensity: row[intensity],
-                    date: row[date],
-                    moodScore: row[moodScore],
-                    analysis: row[analysis]
-                )
-                entries.append(entry)
-            }
-        } catch {
-            print("Fetch journal error: \(error)")
-        }
-        return entries
-    }
-
     func deleteJournalEntry(entryId: String) {
-        do {
-            let entry = journalEntries.filter(id == entryId)
-            try db?.run(entry.delete())
-        } catch {
-            print("Delete journal error: \(error)")
-        }
+        var entries = getAllJournalEntries()
+        entries.removeAll { $0.id == entryId }
+        saveJournalEntries(entries)
     }
 
     // MARK: - Task Operations
 
     func saveTask(_ task: ETask) {
+        var tasks = getAllTasks()
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index] = task
+        } else {
+            tasks.append(task)
+        }
+        saveTasks(tasks)
+    }
+
+    func getAllTasks() -> [ETask] {
+        guard let data = defaults.data(forKey: tasksKey) else { return [] }
         do {
-            try db?.run(tasks.insert(or: .replace,
-                id <- task.id,
-                taskTitle <- task.title,
-                taskDescription <- task.description,
-                taskCategory <- task.category.rawValue,
-                xpReward <- task.xpReward,
-                isCompleted <- task.isCompleted,
-                taskDate <- task.date,
-                difficultyLevel <- task.difficulty
-            ))
+            return try decoder.decode([ETask].self, from: data)
+        } catch {
+            return []
+        }
+    }
+
+    func getTasksForDate(_ date: Date) -> [ETask] {
+        return getAllTasks().filter { !$0.isCompleted }
+    }
+
+    private func saveTasks(_ tasks: [ETask]) {
+        do {
+            let data = try encoder.encode(tasks)
+            defaults.set(data, forKey: tasksKey)
         } catch {
             print("Save task error: \(error)")
         }
     }
 
-    func getTasksForDate(_ date: Date) -> [ETask] {
-        var taskList: [ETask] = []
-        let calendar = Calendar.current
-        do {
-            for row in try db!.prepare(tasks.filter(isCompleted == false)) {
-                if let cat = TaskCategory(rawValue: row[taskCategory]) {
-                    let task = ETask(
-                        id: row[id],
-                        title: row[taskTitle],
-                        description: row[taskDescription],
-                        category: cat,
-                        xpReward: row[xpReward],
-                        isCompleted: row[isCompleted],
-                        date: row[taskDate],
-                        difficulty: row[difficultyLevel]
-                    )
-                    taskList.append(task)
-                }
-            }
-        } catch {
-            print("Fetch tasks error: \(error)")
+    func markTaskCompleted(taskId: String) {
+        var tasks = getAllTasks()
+        if let index = tasks.firstIndex(where: { $0.id == taskId }) {
+            var task = tasks[index]
+            task.isCompleted = true
+            tasks[index] = task
+            saveTasks(tasks)
         }
-        return taskList
     }
 
-    func markTaskCompleted(taskId: String) {
+    // MARK: - User Profile
+
+    func saveUserProfile(_ profile: UserProfile) {
         do {
-            let task = tasks.filter(id == taskId)
-            try db?.run(task.update(isCompleted <- true))
+            let data = try encoder.encode(profile)
+            defaults.set(data, forKey: userProfileKey)
         } catch {
-            print("Mark task error: \(error)")
+            print("Save profile error: \(error)")
+        }
+    }
+
+    func getUserProfile() -> UserProfile {
+        guard let data = defaults.data(forKey: userProfileKey) else {
+            return UserProfile()
+        }
+        do {
+            return try decoder.decode(UserProfile.self, from: data)
+        } catch {
+            return UserProfile()
         }
     }
 }
