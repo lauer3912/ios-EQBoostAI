@@ -21,7 +21,7 @@ packages:
     from: "5.6.0"
   SQLite:
     url: https://github.com/stephencelis/SQLite.swift.git
-    from: "0.14.1"
+    exactVersion: "0.14.1"
   DGCharts:
     url: https://github.com/ChartsOrg/Charts.git
     from: "5.0.0"
