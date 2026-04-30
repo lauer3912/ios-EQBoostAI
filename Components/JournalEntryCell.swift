@@ -48,7 +48,7 @@ class JournalEntryCell: UITableViewCell {
         selectionStyle = .none
 
         contentView.addSubview(containerView)
-        containerView.backgroundColor = Theme.Colors.surfaceDark
+        containerView.backgroundColor = Theme.Colors.backgroundCard
         containerView.layer.cornerRadius = Theme.CornerRadius.medium
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
@@ -64,7 +64,7 @@ class JournalEntryCell: UITableViewCell {
         }
 
         dateLabel.font = Theme.Font.caption()
-        dateLabel.textColor = Theme.Colors.textSecondaryDark
+        dateLabel.textColor = Theme.Colors.textSecondary
         containerView.addSubview(dateLabel)
         dateLabel.snp.makeConstraints { make in
             make.leading.equalTo(scoreIndicator.snp.trailing).offset(12)
@@ -81,7 +81,7 @@ class JournalEntryCell: UITableViewCell {
         }
 
         previewLabel.font = Theme.Font.body()
-        previewLabel.textColor = Theme.Colors.textPrimaryDark
+        previewLabel.textColor = Theme.Colors.textPrimary
         previewLabel.numberOfLines = 2
         containerView.addSubview(previewLabel)
         previewLabel.snp.makeConstraints { make in
@@ -91,7 +91,7 @@ class JournalEntryCell: UITableViewCell {
         }
 
         emotionLabel.font = Theme.Font.caption()
-        emotionLabel.textColor = Theme.Colors.textSecondaryDark
+        emotionLabel.textColor = Theme.Colors.textSecondary
         containerView.addSubview(emotionLabel)
         emotionLabel.snp.makeConstraints { make in
             make.leading.equalTo(dateLabel)

@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.backgroundColor = Theme.Colors.backgroundDark
-        navBarAppearance.titleTextAttributes = [.foregroundColor: Theme.Colors.textPrimaryDark]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: Theme.Colors.textPrimaryDark]
+        navBarAppearance.titleTextAttributes = [.foregroundColor: Theme.Colors.textPrimary]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: Theme.Colors.textPrimary]
 
         UINavigationBar.appearance().standardAppearance = navBarAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = Theme.Colors.surfaceDark
+        tabBarAppearance.backgroundColor = Theme.Colors.backgroundCard
 
         UITabBar.appearance().standardAppearance = tabBarAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance

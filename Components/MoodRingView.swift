@@ -42,13 +42,13 @@ class MoodRingView: UIView {
 
         scoreLabel.text = "\(moodScore)"
         scoreLabel.font = Theme.Font.heading2()
-        scoreLabel.textColor = Theme.Colors.textPrimaryDark
+        scoreLabel.textColor = Theme.Colors.textPrimary
         scoreLabel.textAlignment = .center
         addSubview(scoreLabel)
 
         titleLabel.text = moodTitle
         titleLabel.font = Theme.Font.caption()
-        titleLabel.textColor = Theme.Colors.textSecondaryDark
+        titleLabel.textColor = Theme.Colors.textSecondary
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
 
@@ -83,7 +83,7 @@ class MoodRingView: UIView {
 
         backgroundRingLayer.path = path.cgPath
         backgroundRingLayer.fillColor = UIColor.clear.cgColor
-        backgroundRingLayer.strokeColor = Theme.Colors.surfaceDark.cgColor
+        backgroundRingLayer.strokeColor = Theme.Colors.backgroundCard.cgColor
         backgroundRingLayer.lineWidth = 12
         backgroundRingLayer.lineCap = .round
 

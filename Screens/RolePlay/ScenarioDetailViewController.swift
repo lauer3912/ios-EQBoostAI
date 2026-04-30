@@ -45,7 +45,7 @@ class ScenarioDetailViewController: UIViewController {
     }
 
     private func setupHeader() {
-        headerView.backgroundColor = Theme.Colors.surfaceDark
+        headerView.backgroundColor = Theme.Colors.backgroundCard
         headerView.layer.cornerRadius = Theme.CornerRadius.large
         contentView.addSubview(headerView)
         headerView.snp.makeConstraints { make in
@@ -67,8 +67,8 @@ class ScenarioDetailViewController: UIViewController {
 
         let titleLabel = UILabel()
         titleLabel.text = scenario?.title
-        titleLabel.font = Theme.Font.heading3()
-        titleLabel.textColor = Theme.Colors.textPrimaryDark
+        titleLabel.font = Theme.Font.title3()
+        titleLabel.textColor = Theme.Colors.textPrimary
         headerView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(iconView.snp.trailing).offset(12)
@@ -78,7 +78,7 @@ class ScenarioDetailViewController: UIViewController {
         let descLabel = UILabel()
         descLabel.text = scenario?.description
         descLabel.font = Theme.Font.caption()
-        descLabel.textColor = Theme.Colors.textSecondaryDark
+        descLabel.textColor = Theme.Colors.textSecondary
         descLabel.numberOfLines = 2
         headerView.addSubview(descLabel)
         descLabel.snp.makeConstraints { make in
@@ -89,7 +89,7 @@ class ScenarioDetailViewController: UIViewController {
     }
 
     private func setupChat() {
-        chatContainer.backgroundColor = Theme.Colors.surfaceDark
+        chatContainer.backgroundColor = Theme.Colors.backgroundCard
         chatContainer.layer.cornerRadius = Theme.CornerRadius.large
         contentView.addSubview(chatContainer)
         chatContainer.snp.makeConstraints { make in
@@ -100,7 +100,7 @@ class ScenarioDetailViewController: UIViewController {
     }
 
     private func setupInput() {
-        inputContainer.backgroundColor = Theme.Colors.surfaceDark
+        inputContainer.backgroundColor = Theme.Colors.backgroundCard
         view.addSubview(inputContainer)
         inputContainer.snp.makeConstraints { make in
             make.top.equalTo(scrollView.snp.bottom)
@@ -110,13 +110,13 @@ class ScenarioDetailViewController: UIViewController {
         }
 
         messageTextField.backgroundColor = Theme.Colors.backgroundDark
-        messageTextField.textColor = Theme.Colors.textPrimaryDark
+        messageTextField.textColor = Theme.Colors.textPrimary
         messageTextField.font = Theme.Font.body()
         messageTextField.layer.cornerRadius = Theme.CornerRadius.medium
         messageTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         messageTextField.leftViewMode = .always
         messageTextField.placeholder = "Type your response..."
-        messageTextField.attributedPlaceholder = NSAttributedString(string: "Type your response...", attributes: [.foregroundColor: Theme.Colors.textSecondaryDark])
+        messageTextField.attributedPlaceholder = NSAttributedString(string: "Type your response...", attributes: [.foregroundColor: Theme.Colors.textSecondary])
         inputContainer.addSubview(messageTextField)
         messageTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
@@ -187,7 +187,7 @@ class ScenarioDetailViewController: UIViewController {
         let label = UILabel()
         label.text = message.content
         label.font = Theme.Font.body()
-        label.textColor = Theme.Colors.textPrimaryDark
+        label.textColor = Theme.Colors.textPrimary
         label.numberOfLines = 0
         bubble.addSubview(label)
         label.snp.makeConstraints { make in

@@ -22,7 +22,7 @@ class StreakBadge: UIView {
     }
 
     private func setupView() {
-        backgroundColor = Theme.Colors.surfaceDark
+        backgroundColor = Theme.Colors.backgroundCard
         layer.cornerRadius = Theme.CornerRadius.medium
 
         flameIcon.image = UIImage(systemName: "flame.fill")
@@ -44,13 +44,13 @@ class StreakBadge: UIView {
             make.centerY.equalToSuperview()
         }
 
-        countLabel.font = Theme.Font.heading3()
-        countLabel.textColor = Theme.Colors.textPrimaryDark
+        countLabel.font = Theme.Font.title3()
+        countLabel.textColor = Theme.Colors.textPrimary
         textStack.addArrangedSubview(countLabel)
 
         subtitleLabel.text = "day streak"
         subtitleLabel.font = Theme.Font.caption()
-        subtitleLabel.textColor = Theme.Colors.textSecondaryDark
+        subtitleLabel.textColor = Theme.Colors.textSecondary
         textStack.addArrangedSubview(subtitleLabel)
     }
 

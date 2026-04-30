@@ -34,7 +34,7 @@ class EmotionCard: UIView {
     }
 
     private func setupView() {
-        backgroundColor = Theme.Colors.surfaceDark
+        backgroundColor = Theme.Colors.backgroundCard
         layer.cornerRadius = Theme.CornerRadius.medium
 
         iconView.image = UIImage(systemName: "circle.fill")
@@ -45,7 +45,7 @@ class EmotionCard: UIView {
         addSubview(emojiLabel)
 
         nameLabel.font = Theme.Font.caption()
-        nameLabel.textColor = Theme.Colors.textSecondaryDark
+        nameLabel.textColor = Theme.Colors.textSecondary
         addSubview(nameLabel)
 
         checkmarkView.image = UIImage(systemName: "checkmark.circle.fill")

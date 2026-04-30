@@ -40,7 +40,7 @@ class ScenarioCard: UIView {
     }
 
     private func setupView() {
-        backgroundColor = Theme.Colors.surfaceDark
+        backgroundColor = Theme.Colors.backgroundCard
         layer.cornerRadius = Theme.CornerRadius.large
 
         addSubview(containerView)
@@ -67,7 +67,7 @@ class ScenarioCard: UIView {
         }
 
         chevronIcon.image = UIImage(systemName: "chevron.right")
-        chevronIcon.tintColor = Theme.Colors.textSecondaryDark
+        chevronIcon.tintColor = Theme.Colors.textSecondary
         chevronIcon.contentMode = .scaleAspectFit
         containerView.addSubview(chevronIcon)
         chevronIcon.snp.makeConstraints { make in
@@ -76,8 +76,8 @@ class ScenarioCard: UIView {
             make.size.equalTo(16)
         }
 
-        titleLabel.font = Theme.Font.heading3()
-        titleLabel.textColor = Theme.Colors.textPrimaryDark
+        titleLabel.font = Theme.Font.title3()
+        titleLabel.textColor = Theme.Colors.textPrimary
         containerView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(iconView.snp.trailing).offset(12)
@@ -86,7 +86,7 @@ class ScenarioCard: UIView {
         }
 
         descriptionLabel.font = Theme.Font.caption()
-        descriptionLabel.textColor = Theme.Colors.textSecondaryDark
+        descriptionLabel.textColor = Theme.Colors.textSecondary
         descriptionLabel.numberOfLines = 2
         containerView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
@@ -119,7 +119,7 @@ class ScenarioCard: UIView {
         durationStack.spacing = 4
 
         let clockIcon = UIImageView(image: UIImage(systemName: "clock"))
-        clockIcon.tintColor = Theme.Colors.textSecondaryDark
+        clockIcon.tintColor = Theme.Colors.textSecondary
         clockIcon.contentMode = .scaleAspectFit
         clockIcon.snp.makeConstraints { make in make.size.equalTo(14) }
         durationStack.addArrangedSubview(clockIcon)
@@ -127,7 +127,7 @@ class ScenarioCard: UIView {
         let durationLabelTmp = UILabel()
         durationLabelTmp.text = "\(scenario?.duration ?? 10) min"
         durationLabelTmp.font = Theme.Font.caption()
-        durationLabelTmp.textColor = Theme.Colors.textSecondaryDark
+        durationLabelTmp.textColor = Theme.Colors.textSecondary
         durationStack.addArrangedSubview(durationLabelTmp)
 
         bottomStack.addArrangedSubview(durationStack)
