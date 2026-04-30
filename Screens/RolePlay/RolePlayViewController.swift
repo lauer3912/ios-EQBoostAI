@@ -150,10 +150,10 @@ class RolePlayViewController: UIViewController {
         }
 
         // Tap Gesture
-        card.tag = scenario.hashValue
         let tap = UITapGestureRecognizer(target: self, action: #selector(scenarioTapped(_:)))
         card.addGestureRecognizer(tap)
         card.isUserInteractionEnabled = true
+        card.accessibilityIdentifier = scenario.id
 
         card.snp.makeConstraints { make in
             make.height.equalTo(120)
@@ -179,9 +179,8 @@ class RolePlayViewController: UIViewController {
     }
 
     @objc private func scenarioTapped(_ gesture: UITapGestureRecognizer) {
-        guard let view = gesture.view else { return }
-        let scenarios = viewModel.filteredScenarios
-        if let scenario = scenarios.first(where: { $0.hashValue == view.tag }) {
+        guard let card = gesture.view, let scenarioId = card.accessibilityIdentifier else { return }
+        if let scenario = viewModel.filteredScenarios.first(where: { $0.id == scenarioId }) {
             let detailVC = ScenarioDetailViewController()
             detailVC.scenario = scenario
             navigationController?.pushViewController(detailVC, animated: true)
