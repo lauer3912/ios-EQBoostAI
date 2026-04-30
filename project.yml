@@ -51,6 +51,9 @@ targets:
       - Tests/EQBoostAITests
     dependencies:
       - target: EQBoostAI
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
 
   EQBoostAIUITests:
     type: bundle.ui-testing
@@ -59,6 +62,9 @@ targets:
       - Tests/EQBoostAIUITests
     dependencies:
       - target: EQBoostAI
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
 
 schemes:
   EQBoostAI:
