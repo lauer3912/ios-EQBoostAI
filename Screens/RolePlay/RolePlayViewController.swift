@@ -29,7 +29,7 @@ class RolePlayViewController: UIViewController {
 
         let categories = ["All", "Free", "Premium"]
         for (index, cat) in categories.enumerated() {
-            categorySegment.insertSegment(withTitle: cat, at: index, enabled: true)
+        categorySegment.insertSegment(withTitle: cat, at: index, animated: false)
         }
         categorySegment.selectedSegmentIndex = 0
         categorySegment.addTarget(self, action: #selector(filterChanged), for: .valueChanged)
@@ -79,7 +79,7 @@ class RolePlayViewController: UIViewController {
     }
 
     @objc private func filterChanged() {
-        let filter: ScenarioService.ScenarioFilter
+        let filter: ScenarioFilter
         switch categorySegment.selectedSegmentIndex {
         case 1: filter = .free
         case 2: filter = .premium
