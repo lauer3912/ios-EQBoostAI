@@ -41,7 +41,7 @@ class MoodRingView: UIView {
         addSubview(emojiLabel)
 
         scoreLabel.text = "\(moodScore)"
-        scoreLabel.font = Theme.Font.heading2()
+        scoreLabel.font = Theme.Font.title2()
         scoreLabel.textColor = Theme.Colors.textPrimary
         scoreLabel.textAlignment = .center
         addSubview(scoreLabel)
