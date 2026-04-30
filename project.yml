@@ -15,6 +15,14 @@ settings:
     SWIFT_VERSION: "5.9"
     TARGETED_DEVICE_FAMILY: "1,2"
 
+packages:
+  SnapKit:
+    url: https://github.com/SnapKit/SnapKit.git
+    version: "5.7.1"
+  DGCharts:
+    url: https://github.com/ChartsOrg/Charts.git
+    version: "5.1.0"
+
 targets:
   EQBoostAI:
     type: application
@@ -27,6 +35,9 @@ targets:
       - Services
       - Utilities
       - Resources
+    dependencies:
+      - package: SnapKit
+      - package: DGCharts
     settings:
       base:
         INFOPLIST_FILE: Resources/Info.plist
