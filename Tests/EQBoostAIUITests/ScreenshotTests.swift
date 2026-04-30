@@ -21,40 +21,38 @@ class ScreenshotTests: XCTestCase {
         add(attachment)
     }
 
-    private func tapTab(identifier: String) {
-        let predicate = NSPredicate(format: "accessibilityIdentifier == %@", identifier)
-        let button = app.buttons.matching(predicate).firstMatch
-        if button.exists && button.isHittable {
-            button.tap()
+    private func tapTab(index: Int) {
+        // Use tab bar buttons by index (0-based: Home=0, Journal=1, Practice=2, Tasks=3, Profile=4)
+        let tabBar = app.tabBars.buttons
+        if tabBar.count > index {
+            tabBar.allElementsBoundByIndex[index].tap()
             Thread.sleep(forTimeInterval: 2.0)
-        } else {
-            print("WARNING: Could not find or tap tab: \(identifier)")
         }
     }
 
-    // MARK: - iPhone 6.9" Screenshots
+    // MARK: - iPhone Screenshots
 
     func test01_CaptureHomeTab() throws {
         captureScreenshot(name: "01_Home")
     }
 
     func test02_CaptureJournalTab() throws {
-        tapTab(identifier: "tab_journal")
+        tapTab(index: 1)  // Journal = 2nd tab
         captureScreenshot(name: "02_Journal")
     }
 
     func test03_CapturePracticeTab() throws {
-        tapTab(identifier: "tab_practice")
+        tapTab(index: 2)  // Practice = 3rd tab
         captureScreenshot(name: "03_Practice")
     }
 
     func test04_CaptureTasksTab() throws {
-        tapTab(identifier: "tab_tasks")
+        tapTab(index: 3)  // Tasks = 4th tab
         captureScreenshot(name: "04_Tasks")
     }
 
     func test05_CaptureProfileTab() throws {
-        tapTab(identifier: "tab_profile")
+        tapTab(index: 4)  // Profile = 5th tab
         captureScreenshot(name: "05_Profile")
     }
 }
