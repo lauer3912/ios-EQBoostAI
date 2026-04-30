@@ -1,7 +1,7 @@
 import XCTest
-@testable import SoulSync
+@testable import EQBoostAI
 
-final class SoulSyncTests: XCTestCase {
+final class EQBoostAITests: XCTestCase {
 
     func testEmotionEmoji() {
         XCTAssertEqual(Emotion.happy.emoji, "😊")

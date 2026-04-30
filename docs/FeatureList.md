@@ -1,4 +1,4 @@
-# SoulSync — Feature List
+# EQBoostAI — Feature List
 
 ## Total: 78 Features
 

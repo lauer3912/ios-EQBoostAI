@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController {
             make.center.equalToSuperview()
         }
 
-        nameLabel.text = "SoulSync User"
+        nameLabel.text = "EQBoostAI User"
         nameLabel.font = Theme.Font.heading2()
         nameLabel.textColor = Theme.Colors.textPrimaryDark
         nameLabel.textAlignment = .center
@@ -220,7 +220,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func openPremium() {
-        let alert = UIAlertController(title: "SoulSync Premium", message: "Unlock unlimited roleplay scenarios, advanced AI insights, and more!", preferredStyle: .alert)
+        let alert = UIAlertController(title: "EQBoostAI Premium", message: "Unlock unlimited roleplay scenarios, advanced AI insights, and more!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Subscribe - $2.99/mo", style: .default) { _ in
         })
         alert.addAction(UIAlertAction(title: "Not Now", style: .cancel))

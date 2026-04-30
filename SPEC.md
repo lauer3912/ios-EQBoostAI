@@ -1,12 +1,12 @@
-# SoulSync — AI Emotional Intelligence & Social Skills Coach
+# EQBoostAI — AI Emotional Intelligence & Social Skills Coach
 ## Specification Document
 
 ---
 
 ## 1. Project Overview
 
-- **Project Name:** SoulSync
-- **Bundle Identifier:** `com.ggsheng.SoulSync`
+- **Project Name:** EQBoostAI
+- **Bundle Identifier:** `com.ggsheng.EQBoostAI`
 - **Core Functionality:** AI-powered emotional intelligence coach that helps users understand their emotions, practice social scenarios through AI roleplay, and build social skills through daily tasks and tracking.
 - **Target Users:** Teens (13+), young adults, and middle-aged adults in Western markets (US, UK, CA, AU, DE, FR)
 - **iOS Version Support:** iOS 16.0+
@@ -191,12 +191,12 @@ UITabBarController (5 tabs)
 ### 4.2 Project Structure
 
 ```
-ios-SoulSync/
+ios-EQBoostAI/
 ├── project.yml
 ├── App/
 │   ├── AppDelegate.swift
 │   ├── SceneDelegate.swift
-│   └── SoulSyncApp.swift
+│   └── EQBoostAIApp.swift
 ├── Screens/
 │   ├── Home/
 │   │   ├── HomeViewController.swift
@@ -246,8 +246,8 @@ ios-SoulSync/
 │   ├── LaunchScreen.storyboard
 │   └── Info.plist
 └── Tests/
-    ├── SoulSyncTests/
-    └── SoulSyncUITests/
+    ├── EQBoostAITests/
+    └── EQBoostAIUITests/
 ```
 
 ### 4.3 Asset Requirements
@@ -268,7 +268,7 @@ ios-SoulSync/
 - Background Modes: None
 
 ### 4.5 Info.plist Keys
-- CFBundleDisplayName: SoulSync
+- CFBundleDisplayName: EQBoostAI
 - CFBundleShortVersionString: 1.0.0
 - CFBundleVersion: 1
 - UILaunchStoryboardName: LaunchScreen
@@ -280,8 +280,8 @@ ios-SoulSync/
 ## 5. Subscription IAP (StoreKit 2)
 
 ### Products
-- **SoulSync Premium:** $2.99/month
-- Product ID: `com.ggsheng.SoulSync.premium.monthly`
+- **EQBoostAI Premium:** $2.99/month
+- Product ID: `com.ggsheng.EQBoostAI.premium.monthly`
 
 ### Access
 - Free tier: 3 roleplay scenarios/month, basic journal, 3 daily tasks
@@ -292,7 +292,7 @@ ios-SoulSync/
 ## 6. Privacy & Compliance
 
 - No user data leaves device (MVP — all local)
-- Privacy Policy URL: https://lauer3912.github.io/ios-SoulSync/docs/PrivacyPolicy.html
+- Privacy Policy URL: https://lauer3912.github.io/ios-EQBoostAI/docs/PrivacyPolicy.html
 - App Store privacy questions: All "No" except "Support" category
 
 ---

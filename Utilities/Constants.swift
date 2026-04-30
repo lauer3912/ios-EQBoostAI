@@ -1,12 +1,12 @@
 import Foundation
 
 enum Constants {
-    static let appName = "SoulSync"
-    static let bundleId = "com.ggsheng.SoulSync"
+    static let appName = "EQBoostAI"
+    static let bundleId = "com.ggsheng.EQBoostAI"
     static let version = "1.0.0"
 
     enum IAP {
-        static let premiumProductId = "com.ggsheng.SoulSync.premium.monthly"
+        static let premiumProductId = "com.ggsheng.EQBoostAI.premium.monthly"
         static let premiumPrice = "$2.99/month"
     }
 

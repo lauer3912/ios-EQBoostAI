@@ -1,6 +1,6 @@
 import XCTest
 
-final class SoulSyncUITests: XCTestCase {
+final class EQBoostAIUITests: XCTestCase {
 
     override func setUpWithError() throws {
         continueAfterFailure = false

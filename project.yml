@@ -1,4 +1,4 @@
-name: SoulSync
+name: EQBoostAI
 options:
   bundleIdPrefix: com.ggsheng
   deploymentTarget:
@@ -27,7 +27,7 @@ packages:
     from: "5.0.0"
 
 targets:
-  SoulSync:
+  EQBoostAI:
     type: application
     platform: iOS
     sources:
@@ -45,42 +45,42 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: Resources/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.SoulSync
+        PRODUCT_BUNDLE_IDENTIFIER: com.ggsheng.EQBoostAI
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_ENTITLEMENTS: ""
     entitlements:
-      path: Resources/SoulSync.entitlements
+      path: Resources/EQBoostAI.entitlements
       properties:
         com.apple.developer.applesignin: []
 
-  SoulSyncTests:
+  EQBoostAITests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - Tests/SoulSyncTests
+      - Tests/EQBoostAITests
     dependencies:
-      - target: SoulSync
+      - target: EQBoostAI
 
-  SoulSyncUITests:
+  EQBoostAIUITests:
     type: bundle.ui-testing
     platform: iOS
     sources:
-      - Tests/SoulSyncUITests
+      - Tests/EQBoostAIUITests
     dependencies:
-      - target: SoulSync
+      - target: EQBoostAI
 
 schemes:
-  SoulSync:
+  EQBoostAI:
     build:
       targets:
-        SoulSync: all
+        EQBoostAI: all
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - SoulSyncTests
-        - SoulSyncUITests
+        - EQBoostAITests
+        - EQBoostAIUITests
     profile:
       config: Release
     analyze:

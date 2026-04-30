@@ -1,13 +1,13 @@
-# SoulSync — App Store Listing
+# EQBoostAI — App Store Listing
 
 ## App Name
-**SoulSync** — AI Emotional Intelligence Coach
+**EQBoostAI** — AI Emotional Intelligence Coach
 
 ## Subtitle
 Your pocket guide to social and emotional mastery
 
 ## Description
-SoulSync is your personal emotional intelligence coach — helping you understand your emotions, practice real conversations with AI, and build lasting social skills through daily guided tasks.
+EQBoostAI is your personal emotional intelligence coach — helping you understand your emotions, practice real conversations with AI, and build lasting social skills through daily guided tasks.
 
 ### Key Features
 - **AI Emotion Journal**: Write daily entries and receive personalized AI insights about your emotional patterns
