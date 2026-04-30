@@ -14,7 +14,6 @@ class ScreenshotTests: XCTestCase {
 
     func test01_CaptureHomeTab() throws {
         captureScreenshot(name: "01_Home")
-        saveToFile(name: "home", screenshot: app.windows.firstMatch.screenshot())
     }
 
     func test02_CaptureJournalTab() throws {
@@ -23,7 +22,6 @@ class ScreenshotTests: XCTestCase {
             Thread.sleep(forTimeInterval: 2.0)
         }
         captureScreenshot(name: "02_Journal")
-        saveToFile(name: "journal", screenshot: app.windows.firstMatch.screenshot())
     }
 
     func test03_CaptureRolePlayTab() throws {
@@ -32,7 +30,6 @@ class ScreenshotTests: XCTestCase {
             Thread.sleep(forTimeInterval: 2.0)
         }
         captureScreenshot(name: "03_Practice")
-        saveToFile(name: "practice", screenshot: app.windows.firstMatch.screenshot())
     }
 
     func test04_CaptureTasksTab() throws {
@@ -41,7 +38,6 @@ class ScreenshotTests: XCTestCase {
             Thread.sleep(forTimeInterval: 2.0)
         }
         captureScreenshot(name: "04_Tasks")
-        saveToFile(name: "tasks", screenshot: app.windows.firstMatch.screenshot())
     }
 
     func test05_CaptureProfileTab() throws {
@@ -50,27 +46,31 @@ class ScreenshotTests: XCTestCase {
             Thread.sleep(forTimeInterval: 2.0)
         }
         captureScreenshot(name: "05_Profile")
-        saveToFile(name: "profile", screenshot: app.windows.firstMatch.screenshot())
     }
 
     private func captureScreenshot(name: String) {
-        if let window = app.windows.firstMatch as XCUIElement? {
-            let screenshot = window.screenshot()
-            let attachment = XCTAttachment(screenshot: screenshot, quality: .medium)
-            attachment.name = name
-            attachment.lifetime = .keepAlways
-            add(attachment)
-        }
-    }
+        let window = app.windows.firstMatch
+        let screenshot = window.screenshot()
 
-    private func saveToFile(name: String, screenshot: XCUIScreenshot) {
-        let tempDir = FileManager.default.temporaryDirectory
-        let fileURL = tempDir.appendingPathComponent("eq_\(name).png")
-        do {
-            try screenshot.writeTo(fileURL)
-            print("Saved: \(fileURL.path)")
-        } catch {
-            print("Failed to save: \(error)")
+        // Create attachment for test result
+        let attachment = XCTAttachment(screenshot: screenshot, quality: .jpeg(0.8))
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        // Also save directly using CGImage
+        if let cgImage = screenshot.cgImage {
+            let uiImage = UIImage(cgImage: cgImage)
+            if let data = uiImage.pngData() {
+                let tempDir = FileManager.default.temporaryDirectory
+                let fileURL = tempDir.appendingPathComponent("eq_\(name).png")
+                do {
+                    try data.write(to: fileURL)
+                    print("SAVED: \(fileURL.path)")
+                } catch {
+                    print("SAVE ERROR: \(error)")
+                }
+            }
         }
     }
 }
