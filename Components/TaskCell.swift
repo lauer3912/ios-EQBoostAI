@@ -40,7 +40,7 @@ class TaskCell: UITableViewCell {
         selectionStyle = .none
 
         contentView.addSubview(containerView)
-        containerView.backgroundColor = Theme.Colors.surfaceDark
+        containerView.backgroundColor = Theme.Colors.backgroundCard
         containerView.layer.cornerRadius = Theme.CornerRadius.medium
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16))
@@ -73,7 +73,7 @@ class TaskCell: UITableViewCell {
         }
 
         titleLabel.font = Theme.Font.body()
-        titleLabel.textColor = Theme.Colors.textPrimaryDark
+        titleLabel.textColor = Theme.Colors.textPrimary
         textStack.addArrangedSubview(titleLabel)
 
         descriptionLabel.font = Theme.Font.caption()
