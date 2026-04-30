@@ -5,18 +5,20 @@ class JournalViewController: UIViewController {
 
     private let viewModel = JournalViewModel()
 
+    private let headerLabel = UILabel()
     private let segmentedControl = UISegmentedControl(items: ["New Entry", "History"])
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let tableView = UITableView()
 
     private let entryView = UIView()
+    private let promptLabel = UILabel()
     private let textView = UITextView()
     private let emotionLabel = UILabel()
     private let emotionStackView = UIStackView()
     private let intensityLabel = UILabel()
     private let intensitySlider = UISlider()
     private let saveButton = UIButton(type: .system)
+    private let tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +31,16 @@ class JournalViewController: UIViewController {
         title = "Journal"
         view.backgroundColor = Theme.Colors.backgroundDark
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.circle.fill"), style: .plain, target: self, action: #selector(toggleView))
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            .foregroundColor: Theme.Colors.textPrimary
+        ]
 
         segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.backgroundColor = Theme.Colors.backgroundCard
+        segmentedControl.selectedSegmentTintColor = Theme.Colors.primary
+        segmentedControl.setTitleTextAttributes([.foregroundColor: Theme.Colors.textSecondary], for: .normal)
+        segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
         view.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { make in
@@ -62,32 +71,34 @@ class JournalViewController: UIViewController {
             make.edges.equalToSuperview()
         }
 
-        let placeholderLabel = UILabel()
-        placeholderLabel.text = "What's on your mind today?"
-        placeholderLabel.font = Theme.Font.body()
-        placeholderLabel.textColor = Theme.Colors.textSecondaryDark
-        textView.addSubview(placeholderLabel)
+        // Prompt
+        promptLabel.text = "How are you feeling today?"
+        promptLabel.font = Theme.Font.title3()
+        promptLabel.textColor = Theme.Colors.textPrimary
+        entryView.addSubview(promptLabel)
+        promptLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(Theme.Spacing.lg)
+            make.leading.equalToSuperview().offset(Theme.Spacing.lg)
+        }
 
-        textView.backgroundColor = Theme.Colors.surfaceDark
-        textView.textColor = Theme.Colors.textPrimaryDark
+        // Text View
+        textView.backgroundColor = Theme.Colors.backgroundCard
+        textView.textColor = Theme.Colors.textPrimary
         textView.font = Theme.Font.body()
-        textView.layer.cornerRadius = Theme.CornerRadius.medium
+        textView.layer.cornerRadius = Theme.CornerRadius.large
         textView.textContainerInset = UIEdgeInsets(top: 16, left: 12, bottom: 16, right: 12)
-        textView.delegate = self
+        textView.keyboardAppearance = .dark
         entryView.addSubview(textView)
         textView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Theme.Spacing.md)
+            make.top.equalTo(promptLabel.snp.bottom).offset(Theme.Spacing.md)
             make.leading.trailing.equalToSuperview().inset(Theme.Spacing.lg)
-            make.height.equalTo(200)
-        }
-        placeholderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(16)
+            make.height.equalTo(180)
         }
 
-        emotionLabel.text = "How are you feeling?"
-        emotionLabel.font = Theme.Font.heading3()
-        emotionLabel.textColor = Theme.Colors.textPrimaryDark
+        // Emotions
+        emotionLabel.text = "Select your emotions"
+        emotionLabel.font = Theme.Font.subhead()
+        emotionLabel.textColor = Theme.Colors.textSecondary
         entryView.addSubview(emotionLabel)
         emotionLabel.snp.makeConstraints { make in
             make.top.equalTo(textView.snp.bottom).offset(Theme.Spacing.lg)
@@ -101,24 +112,19 @@ class JournalViewController: UIViewController {
         emotionStackView.snp.makeConstraints { make in
             make.top.equalTo(emotionLabel.snp.bottom).offset(Theme.Spacing.md)
             make.leading.trailing.equalToSuperview().inset(Theme.Spacing.lg)
-            make.height.equalTo(50)
+            make.height.equalTo(60)
         }
 
-        let emotions = [Emotion.happy, .calm, .anxious, .sad, .angry]
-        for emotion in emotions {
-            let card = EmotionCard()
-            card.emotion = emotion
-            card.isSelected = viewModel.selectedEmotions.contains(emotion)
-            card.onTap = { [weak self] in
-                self?.viewModel.toggleEmotion(emotion)
-                self?.updateEmotionSelection()
-            }
-            emotionStackView.addArrangedSubview(card)
+        let emotions: [(Emotion, String)] = [(.happy, "😊"), (.calm, "😌"), (.anxious, "😰"), (.sad, "😢"), (.angry, "😠")]
+        for (emotion, emoji) in emotions {
+            let btn = createEmotionButton(emoji: emoji, emotion: emotion)
+            emotionStackView.addArrangedSubview(btn)
         }
 
-        intensityLabel.text = "Intensity: 5/10"
-        intensityLabel.font = Theme.Font.body()
-        intensityLabel.textColor = Theme.Colors.textSecondaryDark
+        // Intensity
+        intensityLabel.text = "Intensity: 5"
+        intensityLabel.font = Theme.Font.subhead()
+        intensityLabel.textColor = Theme.Colors.textSecondary
         entryView.addSubview(intensityLabel)
         intensityLabel.snp.makeConstraints { make in
             make.top.equalTo(emotionStackView.snp.bottom).offset(Theme.Spacing.lg)
@@ -136,19 +142,31 @@ class JournalViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(Theme.Spacing.lg)
         }
 
+        // Save Button
         saveButton.setTitle("Save Entry", for: .normal)
-        saveButton.titleLabel?.font = Theme.Font.button()
+        saveButton.titleLabel?.font = Theme.Font.headline()
         saveButton.backgroundColor = Theme.Colors.primary
         saveButton.setTitleColor(.white, for: .normal)
-        saveButton.layer.cornerRadius = Theme.CornerRadius.medium
+        saveButton.layer.cornerRadius = Theme.CornerRadius.large
         saveButton.addTarget(self, action: #selector(saveEntry), for: .touchUpInside)
         entryView.addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(intensitySlider.snp.bottom).offset(Theme.Spacing.xl)
             make.leading.trailing.equalToSuperview().inset(Theme.Spacing.lg)
             make.height.equalTo(56)
-            make.bottom.equalToSuperview().offset(-Theme.Spacing.lg)
+            make.bottom.equalToSuperview().offset(-Theme.Spacing.xl)
         }
+    }
+
+    private func createEmotionButton(emoji: String, emotion: Emotion) -> UIButton {
+        let btn = UIButton(type: .system)
+        btn.setTitle(emoji, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 28)
+        btn.backgroundColor = Theme.Colors.backgroundCard
+        btn.layer.cornerRadius = Theme.CornerRadius.medium
+        btn.tag = emotion.hashValue
+        btn.addTarget(self, action: #selector(emotionTapped(_:)), for: .touchUpInside)
+        return btn
     }
 
     private func setupHistoryTable() {
@@ -167,14 +185,6 @@ class JournalViewController: UIViewController {
         viewModel.onEntriesUpdated = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
-            }
-        }
-    }
-
-    private func updateEmotionSelection() {
-        for case let card as EmotionCard in emotionStackView.arrangedSubviews {
-            if let emotion = card.emotion {
-                card.isSelected = viewModel.selectedEmotions.contains(emotion)
             }
         }
     }
@@ -199,42 +209,29 @@ class JournalViewController: UIViewController {
         }
     }
 
-    @objc private func toggleView() {
-        segmentedControl.selectedSegmentIndex = segmentedControl.selectedSegmentIndex == 0 ? 1 : 0
-        segmentChanged()
+    @objc private func emotionTapped(_ sender: UIButton) {
+        let allEmotions = Emotion.allCases
+        if let tappedEmotion = allEmotions.first(where: { $0.hashValue == sender.tag }) {
+            viewModel.toggleEmotion(tappedEmotion)
+            sender.backgroundColor = viewModel.selectedEmotions.contains(tappedEmotion)
+                ? Theme.Colors.primary.withAlphaComponent(0.3)
+                : Theme.Colors.backgroundCard
+        }
     }
 
     @objc private func intensityChanged() {
         let value = Int(intensitySlider.value)
-        intensityLabel.text = "Intensity: \(value)/10"
+        intensityLabel.text = "Intensity: \(value)"
         viewModel.intensity = value
     }
 
     @objc private func saveEntry() {
-        guard !textView.text.isEmpty else {
-            showAlert(message: "Please write something before saving.")
-            return
-        }
         viewModel.entryText = textView.text
         viewModel.saveEntry()
         textView.text = ""
-        showAlert(message: "Journal entry saved!")
-        segmentedControl.selectedSegmentIndex = 1
-        segmentChanged()
-    }
-
-    private func showAlert(message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Saved!", message: "Your journal entry has been saved.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
-    }
-}
-
-extension JournalViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        for subview in textView.subviews where subview is UILabel {
-            subview.isHidden = !textView.text.isEmpty
-        }
     }
 }
 
@@ -251,13 +248,5 @@ extension JournalViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 130
-    }
-
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
-            self?.viewModel.deleteEntry(at: indexPath.row)
-            completion(true)
-        }
-        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
