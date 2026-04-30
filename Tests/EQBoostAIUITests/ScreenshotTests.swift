@@ -7,49 +7,59 @@ class ScreenshotTests: XCTestCase {
         super.setUp()
         app = XCUIApplication()
         app.launchArguments = ["--uitesting"]
+        app.launchEnvironment = ["DYLD_INSERT_LIBRARIES": ""]
         app.launch()
-        Thread.sleep(forTimeInterval: 2.0)
+        Thread.sleep(forTimeInterval: 3.0)
     }
 
-    func testCaptureHomeTab() throws {
+    func test01_CaptureHomeTab() throws {
         // Tab 1: Home - already selected by default
-        Thread.sleep(forTimeInterval: 1.5)
         captureScreenshot(name: "01_Home")
     }
 
-    func testCaptureJournalTab() throws {
+    func test02_CaptureJournalTab() throws {
         // Tab 2: Journal
-        app.tabBars.buttons["Journal"].tap()
-        Thread.sleep(forTimeInterval: 1.5)
+        if app.tabBars.buttons["Journal"].waitForExistence(timeout: 5) {
+            app.tabBars.buttons["Journal"].tap()
+            Thread.sleep(forTimeInterval: 2.0)
+        }
         captureScreenshot(name: "02_Journal")
     }
 
-    func testCaptureRolePlayTab() throws {
-        // Tab 3: Practice (RolePlay)
-        app.tabBars.buttons["Practice"].tap()
-        Thread.sleep(forTimeInterval: 1.5)
+    func test03_CaptureRolePlayTab() throws {
+        // Tab 3: Practice
+        if app.tabBars.buttons["Practice"].waitForExistence(timeout: 5) {
+            app.tabBars.buttons["Practice"].tap()
+            Thread.sleep(forTimeInterval: 2.0)
+        }
         captureScreenshot(name: "03_Practice")
     }
 
-    func testCaptureTasksTab() throws {
+    func test04_CaptureTasksTab() throws {
         // Tab 4: Tasks
-        app.tabBars.buttons["Tasks"].tap()
-        Thread.sleep(forTimeInterval: 1.5)
+        if app.tabBars.buttons["Tasks"].waitForExistence(timeout: 5) {
+            app.tabBars.buttons["Tasks"].tap()
+            Thread.sleep(forTimeInterval: 2.0)
+        }
         captureScreenshot(name: "04_Tasks")
     }
 
-    func testCaptureProfileTab() throws {
+    func test05_CaptureProfileTab() throws {
         // Tab 5: Profile
-        app.tabBars.buttons["Profile"].tap()
-        Thread.sleep(forTimeInterval: 1.5)
+        if app.tabBars.buttons["Profile"].waitForExistence(timeout: 5) {
+            app.tabBars.buttons["Profile"].tap()
+            Thread.sleep(forTimeInterval: 2.0)
+        }
         captureScreenshot(name: "05_Profile")
     }
 
     private func captureScreenshot(name: String) {
-        let screenshot = app.windows.firstMatch.screenshot()
-        let attachment = XCTAttachment(screenshot: screenshot, quality: .medium)
-        attachment.name = name
-        attachment.lifetime = .keepAlways
-        add(attachment)
+        if let window = app.windows.firstMatch as XCUIElement? {
+            let screenshot = window.screenshot()
+            let attachment = XCTAttachment(screenshot: screenshot, quality: .medium)
+            attachment.name = name
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
     }
 }
