@@ -14,7 +14,7 @@ class TaskCell: UITableViewCell {
             categoryIcon.image = UIImage(systemName: task.category.icon)
             categoryIcon.tintColor = UIColor(hex: task.category.color)
             checkboxImageView.image = UIImage(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-            checkboxImageView.tintColor = task.isCompleted ? Theme.Colors.success : Theme.Colors.textSecondaryDark
+            checkboxImageView.tintColor = task.isCompleted ? Theme.Colors.success : Theme.Colors.textSecondary
         }
     }
 
@@ -77,7 +77,7 @@ class TaskCell: UITableViewCell {
         textStack.addArrangedSubview(titleLabel)
 
         descriptionLabel.font = Theme.Font.caption()
-        descriptionLabel.textColor = Theme.Colors.textSecondaryDark
+        descriptionLabel.textColor = Theme.Colors.textSecondary
         descriptionLabel.numberOfLines = 1
         textStack.addArrangedSubview(descriptionLabel)
 
